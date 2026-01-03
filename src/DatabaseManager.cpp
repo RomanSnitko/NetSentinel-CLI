@@ -10,21 +10,23 @@ void DatabaseManager::connect()
         connection = std::make_unique<pqxx::connection>(conn_str);
         if (connection->is_open()) 
         {
-            std::cout << "[DB] connected to: " << connection->dbname() << std::endl;
+            std::cout << "[DB] Connected to: " << connection->dbname() << std::endl;
         }
     } 
     catch (const std::exception &e) 
     {
-        std::cerr << "[DB] error: " << e.what() << std::endl;
+        std::cerr << "[DB] Error: " << e.what() << std::endl;
         throw;
     }
 }
 
 void DatabaseManager::createTables() 
 {
-    pqxx::work W(*connection); //work with transaction
-    
-    W.exec(R"(
+    pqxx::work W(*connection);
+
+    W.exec
+    (
+        R"(
         CREATE TABLE IF NOT EXISTS devices (
             id SERIAL PRIMARY KEY,
             mac_address TEXT UNIQUE NOT NULL,
@@ -32,34 +34,28 @@ void DatabaseManager::createTables()
             hostname TEXT,
             last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
-    )");
+        CREATE TABLE IF NOT EXISTS network_events (
+            id SERIAL PRIMARY KEY,
+            mac_address TEXT,
+            event_type TEXT,
+            details TEXT,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        )"
+    );
 
     W.commit();
-    std::cout << "[DB] tables initialized :)" << std::endl;
 }
 
-void DatabaseManager::insertDevice(const std::string& mac, const std::string& ip, const std::string& hostname)
+void DatabaseManager::saveDevice(const std::string& mac, const std::string& ip, const std::string& hostname) 
 {
-    try
-    {
-        pqxx::work W(*connection);
-
-        W.exec_params(
-            "INSERT INTO devices (mac_address, ip_address, hostname) "
-            "VALUES ($1, $2, $3) "
-            "ON CONFLICT (mac_address) DO UPDATE SET "
-            "ip_address = EXCLUDED.ip_address, "
-            "hostname = EXCLUDED.hostname, "
-            "last_seen = CURRENT_TIMESTAMP;",
-            mac, ip, hostname
-        );
-
-        W.commit();
-        std::cout << "[DB] device inserted/updated: " << mac << std::endl;
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "[DB] insertDevice error: " << e.what() << std::endl;
-        throw;
-    }
+    pqxx::work W(*connection);
+    
+    W.exec_params(
+        "INSERT INTO devices (mac_address, ip_address, hostname, last_seen) "
+        "VALUES ($1, $2, $3, CURRENT_TIMESTAMP) "
+        "ON CONFLICT (mac_address) DO UPDATE SET ip_address = $2, hostname = $3, last_seen = CURRENT_TIMESTAMP",
+        mac, ip, hostname
+    );
+    W.commit();
 }
