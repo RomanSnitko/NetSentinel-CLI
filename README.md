@@ -8,7 +8,7 @@ A low-level network audit and infrastructure monitoring system. It implements ac
 * Tools: CMake, PostgreSQL, CLI.
   
 ---
-
+```
 ====================================
       NetSentinel CLI v1.0.0
 ====================================
@@ -20,3 +20,4 @@ Options:
   -a, --audit <IP> Run port audit on target IP
   -t, --test-speed Latency, Jitter, Download Speed
   -l, --list       Show all devices from DB
+```
