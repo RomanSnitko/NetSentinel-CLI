@@ -1,6 +1,5 @@
 # NetSentinel-CLI
 
-NetSentinel CLI
 A low-level network audit and infrastructure monitoring system. It implements active host discovery through manual packet assembly (Raw Sockets L2/L3), an asynchronous scanning engine for thousands of ports based on Boost.Asio, and a network threat detector (ARP Spoofing). Includes modules for measuring link quality metrics and PostgreSQL integration (libpqxx) for tracking network status and topology history.
 
 * C++ Dev: Boost.Asio, Async Programming, RAII, libpqxx (PostgreSQL).
