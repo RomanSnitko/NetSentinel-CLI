@@ -4,6 +4,7 @@
 #include "CLIHandler.hpp"
 #include "AuditEngine.hpp"
 #include <boost/asio.hpp>
+#include "DiscoveryEngine.hpp"
 
 int main(int argc, char* argv[]) 
 {
@@ -22,25 +23,31 @@ int main(int argc, char* argv[])
         db->connect();
         db->createTables();
 
-        if (mode == "-h" || mode == "--help") 
+        if (mode == "-h" || mode == "--help")
         {
             CLIHandler::printHelp();
             return 0;
         } 
         else if (mode == "-s" || mode == "--scan")
         {
-            /*
-                Что это: Уровень L2 (Data Link) и L3 (Network) модели OSI. Самая сложная и «хакерская» часть. 
-                Программа ищет, кто вообще подключен к твоему Wi-Fi или Ethernet.
+            std::string interface = (argc >= 3) ? argv[2] : "eth0";
 
-                За какие файлы отвечает:
-                include/DiscoveryEngine.hpp
-                src/DiscoveryEngine.cpp
+            std::cout << "[*] initializing Discovery Engine..." << std::endl;
+            
+            try 
+            {
+                DiscoveryEngine discovery(db);
 
-                Логика: Здесь будет использоваться ARP (Address Resolution Protocol). Программа отправляет 
-                широковещательный запрос («Кто здесь?»), собирает MAC-адреса и IP-адреса всех устройств и 
-                передает их в DatabaseManager для сохранения.
-            */
+                discovery.runScan(interface);
+
+                std::cout << "[+] scan completed successfully." << std::endl;
+            } 
+            catch (const std::exception& e) 
+            {
+                // sudo or forgot interface problem
+                std::cerr << "\033[1;31m[!] Discovery Error: " << e.what() << "\033[0m" << std::endl;
+                std::cerr << "[?] Hint: Check if you ran the program with 'sudo' and provided the correct interface name (e.g., eth0, wlan0, enp3s0)." << std::endl;
+            }
         }
         else if (mode == "-a" || mode == "--audit") 
         {
@@ -58,17 +65,8 @@ int main(int argc, char* argv[])
         }
         else if (mode == "-l" || mode == "--list") 
         {
-            /*
-            Что это: Работа с данными. Это твоя «память». Если ты сканировал сеть вчера, 
-            тебе не нужно сканировать её снова, чтобы увидеть список устройств — они уже в базе.
-
-            За какие файлы отвечает:
-                include/DatabaseManager.hpp
-                src/DatabaseManager.cpp
-
-            Логика: Программа делает SQL-запрос SELECT * FROM devices; к PostgreSQL. 
-            Затем она красиво выводит этот список в терминал.
-            */
+            db->listDevices();
+            return 0;
         }
         else if (mode == "-t" || mode == "--test-speed")
         {
