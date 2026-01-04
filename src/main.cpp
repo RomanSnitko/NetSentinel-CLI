@@ -51,17 +51,25 @@ int main(int argc, char* argv[])
         }
         else if (mode == "-a" || mode == "--audit") 
         {
-            /*
-            Что это: Уровень L4 (Transport). Когда мы уже знаем IP устройства (например, твоего телевизора), мы 
-            хотим проверить его «двери» (порты). Открытый порт — это потенциальная лазейка.
+            if (argc < 3) 
+            {
+                std::cerr << "Usage: ./NetSentinel --audit <IP>\n";
+                return 1;
+            }
+            std::string target_ip = argv[2];
+    
+            boost::asio::io_context io_ctx;
 
-            За какие файлы отвечает:
-                include/AuditEngine.hpp
-                src/AuditEngine.cpp
+            auto auditor = std::make_shared<AuditEngine>(io_ctx, db);
 
-            Логика: Использует Boost.Asio. Пытается асинхронно подключиться к списку портов (80, 443, 22 и т.д.). 
-            Если подключение удалось — порт открыт. Результат (какие порты открыты) записывается в базу.
-            */
+            std::vector<uint16_t> common_ports = {21, 22, 23, 25, 53, 80, 110, 143, 443, 445, 3306, 3389, 5432, 6666, 7777, 9999, 8080};
+
+            auditor->scanTarget(target_ip, common_ports);
+
+            //async cycle
+            io_ctx.run();
+
+            std::cout << "[*] audit for " << target_ip << " finished." << std::endl;
         }
         else if (mode == "-l" || mode == "--list") 
         {

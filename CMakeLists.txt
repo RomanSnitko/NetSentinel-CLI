@@ -17,6 +17,7 @@ set(SOURCES
     src/CLIHandler.cpp
     src/DiscoveryEngine.cpp
     src/MetricsEngine.cpp
+    src/AuditEngine.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
