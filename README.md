@@ -12,11 +12,6 @@
 
 ## Tech Stack
 
-* C++ Development: Boost.Asio, Async Programming, RAII, C++17/20.
-* Networking: L2-L4 Layers, TCP/UDP, ARP, ICMP, Raw Sockets (AF_PACKET).
-* Database: PostgreSQL 13+, libpqxx (parameterized queries).
-* Build System: CMake.
-
 * C++ Dev: Boost.Asio (Proactor pattern), Boost.Beast (HTTP), Async Programming, RAII, C++17/20, Smart Pointers.
 * Networking: L2-L7 Layers, ARP, ICMP, TCP/UDP, Raw Sockets (AF_PACKET), System IO (ioctl), IP/MAC stack management.
 * Security: ARP Spoofing Watchdog, Asynchronous Port Auditing, Network Event Logging.
