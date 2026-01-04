@@ -17,7 +17,7 @@ void AuditEngine::scanTarget(const std::string& ip, const std::vector<uint16_t>&
     }
 }
 
-//check, open/close port with socket
+//check, open/dumbling port with socket
 void AuditEngine::checkPort(const std::string& ip, uint16_t port)
 {
     auto socket = std::make_shared<tcp::socket>(io_ctx);
