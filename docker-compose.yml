@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: netsentinel_db_container
+    restart: always
+    environment:
+      POSTGRES_USER: roman
+      POSTGRES_PASSWORD: 31072007
+      POSTGRES_DB: netsentinel_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
