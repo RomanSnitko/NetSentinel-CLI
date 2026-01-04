@@ -17,6 +17,11 @@
 * Database: PostgreSQL 13+, libpqxx (parameterized queries).
 * Build System: CMake.
 
+* C++ Dev: Boost.Asio (Proactor pattern), Boost.Beast (HTTP), Async Programming, RAII, C++17/20, Smart Pointers.
+* Networking: L2-L7 Layers, ARP, ICMP, TCP/UDP, Raw Sockets (AF_PACKET), System IO (ioctl), IP/MAC stack management.
+* Security: ARP Spoofing Watchdog, Asynchronous Port Auditing, Network Event Logging.
+* Data & Tools: PostgreSQL (libpqxx), PostgreSQL, Docker-compose (containerization), CMake, CLI formatting (iomanip).
+
 ## Project Structure
 
 The project follows a modular architecture, separating the low-level networking logic from the asynchronous engine and the data persistence layer.
