@@ -2,8 +2,6 @@
 
 Система низкоуровневого сетевого аудита и мониторинга инфраструктуры. Реализует активное обнаружение хостов через ручную сборку пакетов (Raw Sockets L2/L3), асинхронный движок сканирования тысяч портов на базе Boost.Asio и детектор сетевых угроз (ARP Spoofing). Включает модули замера метрик качества канала и интеграцию с PostgreSQL (libpqxx) для отслеживания истории состояний и топологии сети.
 
----
-
 ## Features
 
 * L2/L3 Discovery: Active host detection using manual ARP packet assembly (Raw Sockets).
@@ -12,8 +10,6 @@
 * Quality Metrics: Real-time measurement of Latency, Jitter, and Download Speed.
 * Persistent Storage: SQL-based tracking of network history and device status via libpqxx.
 
----
-
 ## Tech Stack
 
 * C++ Development: Boost.Asio, Async Programming, RAII, C++17/20.
@@ -21,9 +17,6 @@
 * Database: PostgreSQL 13+, libpqxx (parameterized queries).
 * Build System: CMake.
 
----
-
-    
 ## Project Structure
 
 The project follows a modular architecture, separating the low-level networking logic from the asynchronous engine and the data persistence layer.
@@ -121,16 +114,12 @@ sudo ./NetSentinel -s wlo1
 [+] Port 443 is OPEN on 192.168.10.1
 [*] Audit for 192.168.10.1 finished.
 ```
-  
----
 
 ## Architecture
 
 * DiscoveryEngine: Uses AF_PACKET and SOCK_RAW to bypass the standard TCP/IP stack, manually constructing Ethernet and ARP headers to map the local network.
 * AuditEngine: Implements an asynchronous event loop. Instead of sequential scanning, it initiates hundreds of connection attempts simultaneously using Boost.Asio timers for sub-second fail-fast logic.
 * DatabaseManager: Implements the RAII pattern for SQL connections, ensuring all resources are freed and transactions are committed safely.
-
----
 
 ## Requirements
 
