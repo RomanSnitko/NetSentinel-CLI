@@ -1,6 +1,6 @@
 # NetSentinel-CLI
 
-Система низкоуровневого сетевого аудита и мониторинга инфраструктуры. Реализует активное обнаружение хостов через ручную сборку пакетов (Raw Sockets L2/L3), асинхронный движок сканирования тысяч портов на базе Boost.Asio и детектор сетевых угроз (ARP Spoofing). Включает модули замера метрик качества канала и интеграцию с PostgreSQL (libpqxx) для отслеживания истории состояний и топологии сети.
+Высокопроизводительная система низкоуровневого сетевого аудита и мониторинга инфраструктуры. Реализует активное обнаружение хостов через ручную сборку пакетов (Raw Sockets L2/L3) и прямое взаимодействие с ядром Linux (ioctl). Включает асинхронный движок сканирования тысяч портов на базе Boost.Asio (паттерн Proactor), детектор сетевых угроз (ARP Spoofing Watchdog) и модули замера метрик качества канала на уровне L7 (Boost.Beast). Интегрирована с PostgreSQL (libpqxx) и Docker-compose для персистентного отслеживания истории состояний сети и её топологии.
 
 ## Features
 
@@ -15,7 +15,7 @@
 * C++ Dev: Boost.Asio (Proactor pattern), Boost.Beast (HTTP), Async Programming, RAII, C++17/20, Smart Pointers.
 * Networking: L2-L7 Layers, ARP, ICMP, TCP/UDP, Raw Sockets (AF_PACKET), System IO (ioctl), IP/MAC stack management.
 * Security: ARP Spoofing Watchdog, Asynchronous Port Auditing, Network Event Logging.
-* Data & Tools: PostgreSQL (libpqxx), PostgreSQL, Docker-compose (containerization), CMake, CLI formatting (iomanip).
+* Data & Tools: PostgreSQL (libpqxx), Parameterized SQL, Docker-compose (containerization), CMake, CLI formatting (iomanip).
 
 ## Project Structure
 
