@@ -42,6 +42,13 @@ void DatabaseManager::createTables()
             details TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+        CREATE TABLE IF NOT EXISTS metrics (
+        id SERIAL PRIMARY KEY,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        latency_ms FLOAT NOT NULL,
+        jitter_ms FLOAT NOT NULL,
+        download_speed_mbps FLOAT NOT NULL
+        );
         )"
     );
 
@@ -118,5 +125,24 @@ void DatabaseManager::logEvent(const std::string& mac, const std::string& type, 
     catch (const std::exception &e) 
     {
         std::cerr << "[DB] LogEvent error: " << e.what() << std::endl;
+    }
+}
+
+void DatabaseManager::saveMetrics(double latency, double jitter, double speed) 
+{
+    try 
+    {
+        pqxx::work W(*connection);
+        W.exec_params
+        (
+            "INSERT INTO metrics (latency_ms, jitter_ms, download_speed_mbps) VALUES ($1, $2, $3)",
+            latency, jitter, speed
+        );
+        W.commit();
+        std::cout << "[DB] Metrics saved to history." << std::endl;
+    } 
+    catch (const std::exception &e) 
+    {
+        std::cerr << "[DB] Metrics save error: " << e.what() << std::endl;
     }
 }

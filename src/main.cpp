@@ -5,6 +5,7 @@
 #include "AuditEngine.hpp"
 #include <boost/asio.hpp>
 #include "DiscoveryEngine.hpp"
+#include "MetricsEngine.hpp"
 
 int main(int argc, char* argv[]) 
 {
@@ -78,24 +79,25 @@ int main(int argc, char* argv[])
         }
         else if (mode == "-t" || mode == "--test-speed")
         {
-            /*
-            Что это: Модуль измерения качества связи (L3/L7). 
-            Позволяет оценить реальную производительность сети и стабильность интернета.
+            std::cout << "\033[1;35m[*] Starting Network Quality Test...\033[0m" << std::endl;
+            
+            try 
+            {
+                boost::asio::io_context io_ctx;
 
-            За какие файлы отвечает:
-                include/MetricsEngine.hpp
-                src/MetricsEngine.cpp
+                auto metrics = std::make_shared<MetricsEngine>(io_ctx, db);
 
-            Логика: 
-                1. Latency & Jitter: Выполняет серию ICMP-запросов (Ping) до 8.8.8.8 
-                   и вычисляет задержку и её колебания (стабильность канала).
-                2. Speed Test: Использует Boost.Beast (HTTP) для загрузки тестового блока 
-                   данных и вычисляет реальную скорость загрузки в Mbps.
-                3. База данных: Сохраняет полученные метрики в таблицу 'metrics' 
-                   для построения истории качества связи.
-            */
+                metrics->runAllTests();
+
+                io_ctx.run();
+
+                std::cout << "\033[1;32m[+] All tests completed.\033[0m" << std::endl;
+            } 
+            catch (const std::exception& e) 
+            {
+                std::cerr << "[!] Metrics Error: " << e.what() << std::endl;
+            }
         }
-        
         else 
         {
             std::cout << "Unknown option. Use --help\n";

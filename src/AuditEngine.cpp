@@ -38,7 +38,7 @@ void AuditEngine::checkPort(const std::string& ip, uint16_t port)
     socket->async_connect(endpoint, [this, socket, timer, port, ip](const boost::system::error_code& ec) {
         timer->cancel();
 
-        if (!ec) 
+        if (!ec)
         {
             std::cout << "\033[1;32m[+]\033[0m Port " << port << " is OPEN on " << ip << std::endl;
 
