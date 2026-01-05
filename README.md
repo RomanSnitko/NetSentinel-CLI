@@ -114,6 +114,42 @@ sudo ./NetSentinel -s wlo1
 [+] Port 443 is OPEN on 192.168.10.1
 [*] Audit for 192.168.10.1 finished.
 ```
+### (Scan Devices)
+```
+[DB] Connected to: netsentinel_db
+[*] initializing Discovery Engine...
+[*] Starting scan on wlo1...
+[*] waiting for arp replies...
+[FOUND] IP: 192.168.10.1    | MAC: 80:af:ca:6a:e2:18
+[+] scan completed successfully.
+```
+### (Test Speed)
+```
+[DB] Connected to: netsentinel_db
+[*] Starting Network Quality Test...
+[*] Starting network quality metrics...
+[Metrics] Ping 8.8.8.8: 19.23 ms
+[Metrics] Ping 8.8.8.8: 350.40 ms
+[Metrics] Ping 8.8.8.8: 301.70 ms
+[Metrics] Ping 8.8.8.8: 17.47 ms
+[Metrics] Ping 8.8.8.8: 399.87 ms
+[Metrics] Ping 8.8.8.8: 99.76 ms
+[Metrics] Ping 8.8.8.8: 401.44 ms
+[Metrics] Ping 8.8.8.8: 18.00 ms
+[Metrics] Ping 8.8.8.8: 21.65 ms
+[Metrics] Ping 8.8.8.8: 18.17 ms
+[+] Latency: 164.77 ms
+[+] Jitter: 226.54 ms
+[*] Moving to download speed test...
+[Metrics] Step 1: Resolving www.google.com...
+[Metrics] Step 2: Connecting...
+[Metrics] Step 3: Requesting data...
+[Metrics] Step 4: Receiving data...
+[+] Download Speed: 2.22 Mbps
+[DB] Metrics saved to history.
+[DB] Metrics saved successfully.
+[+] All tests completed.
+```
 
 ## Architecture
 
